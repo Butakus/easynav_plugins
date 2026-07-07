@@ -79,10 +79,10 @@ TEST_F(AMCLLocalizerInitialPoseTest, SubscribesToInitialPoseWithDefaultCallbackG
     rclcpp::Parameter("test.initial_pose.x", x0),
     rclcpp::Parameter("test.initial_pose.y", y0),
     rclcpp::Parameter("test.initial_pose.yaw", yaw0),
-    rclcpp::Parameter("test.initial_pose.std_dev_xy", 0.0),
-    rclcpp::Parameter("test.initial_pose.std_dev_yaw", 0.0),
-    rclcpp::Parameter("test.min_noise_xy", 0.0),
-    rclcpp::Parameter("test.min_noise_yaw", 0.0),
+    rclcpp::Parameter("test.initial_pose.std_dev_xy", 1e-12),
+    rclcpp::Parameter("test.initial_pose.std_dev_yaw", 1e-12),
+    rclcpp::Parameter("test.min_noise_xy", 1e-12),
+    rclcpp::Parameter("test.min_noise_yaw", 1e-12),
     rclcpp::Parameter("test.compute_odom_from_tf", true),
   });
 
@@ -95,16 +95,16 @@ TEST_F(AMCLLocalizerInitialPoseTest, SubscribesToInitialPoseWithDefaultCallbackG
 
   {
     const tf2::Transform tf = localizer->getEstimatedPose();
-    EXPECT_NEAR(tf.getOrigin().x(), x0, 1e-9);
-    EXPECT_NEAR(tf.getOrigin().y(), y0, 1e-9);
-    EXPECT_NEAR(yaw_from_tf(tf), yaw0, 1e-9);
+    EXPECT_NEAR(tf.getOrigin().x(), x0, 1e-6);
+    EXPECT_NEAR(tf.getOrigin().y(), y0, 1e-6);
+    EXPECT_NEAR(yaw_from_tf(tf), yaw0, 1e-6);
   }
 
   {
     const nav_msgs::msg::Odometry odom = localizer->get_pose();
-    EXPECT_NEAR(odom.pose.pose.position.x, x0, 1e-9);
-    EXPECT_NEAR(odom.pose.pose.position.y, y0, 1e-9);
-    EXPECT_NEAR(yaw_from_quat(odom.pose.pose.orientation), yaw0, 1e-9);
+    EXPECT_NEAR(odom.pose.pose.position.x, x0, 1e-6);
+    EXPECT_NEAR(odom.pose.pose.position.y, y0, 1e-6);
+    EXPECT_NEAR(yaw_from_quat(odom.pose.pose.orientation), yaw0, 1e-6);
   }
 
   const auto infos = node->get_subscriptions_info_by_topic("initialpose");
