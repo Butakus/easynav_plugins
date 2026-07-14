@@ -224,6 +224,20 @@ AMCLLocalizer::on_initialize()
   node->get_parameter<double>(plugin_name + ".reseed_freq", reseed_freq);
   reseed_time_ = 1.0 / reseed_freq;
 
+  // Check if any of the standard deviations are non-positive
+  // This is undefined behavior in std::normal_distribution and may result in a runtime assertion
+  if (
+    std_dev_xy <= 0.0 ||
+    std_dev_yaw <= 0.0 ||
+    noise_translation_ <= 0.0 ||
+    noise_rotation_ <= 0.0 ||
+    noise_translation_to_rotation_ <= 0.0 ||
+    min_noise_xy_ <= 0.0 ||
+    min_noise_yaw_ <= 0.0)
+  {
+    throw std::runtime_error("AMCLLocalizer: standard deviations must be positive");
+  }
+
   RCLCPP_INFO(node->get_logger(), "Initialized AMCL pose with %d particles", num_particles);
   RCLCPP_INFO(node->get_logger(), "at position (%lf, %lf, %lf) std_dev [%lf, %lf]",
     x_init, y_init, yaw_init, std_dev_xy, std_dev_yaw);

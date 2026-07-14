@@ -415,6 +415,22 @@ void AMCLLocalizer::on_initialize()
   node->get_parameter<double>(plugin_name + ".top_keep_fraction", top_keep_fraction_);
   node->get_parameter<double>(plugin_name + ".downsampled_cloud_size", downsampled_cloud_size_);
 
+
+  // Check if any of the standard deviations are non-positive
+  // This is undefined behavior in std::normal_distribution and may result in a runtime assertion
+  if (
+    std_dev_xy <= 0.0 ||
+    std_dev_yaw <= 0.0 ||
+    noise_translation_ <= 0.0 ||
+    noise_rotation_ <= 0.0 ||
+    noise_translation_to_rotation_ <= 0.0 ||
+    min_noise_xy_ <= 0.0 ||
+    min_noise_yaw_ <= 0.0)
+  {
+    throw std::runtime_error("AMCLLocalizer: standard deviations must be positive");
+  }
+
+
   if (!std::isfinite(inflation_stddev_) || inflation_stddev_ <= 0.0) {inflation_stddev_ = 1.5;}
   if (!std::isfinite(inflation_prob_min_) || inflation_prob_min_ <= 0.0) {
     inflation_prob_min_ = 0.01;
