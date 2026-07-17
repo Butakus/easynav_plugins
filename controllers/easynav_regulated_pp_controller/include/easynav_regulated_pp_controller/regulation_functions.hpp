@@ -1,4 +1,10 @@
+// Copyright (c) 2020 Shrijit Singh
+// Copyright (c) 2020 Samsung Research America
 // Copyright 2025 Intelligent Robotics Lab
+//
+// This file is part of the project Easy Navigation (EasyNav in short)
+// and is a derivative work of nav2_regulated_pure_pursuit_controller,
+// ported to the EasyNav plugin architecture.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
