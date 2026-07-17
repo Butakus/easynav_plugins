@@ -1,4 +1,4 @@
-// Copyright 2025 Intelligent Robotics Lab
+// Copyright 2026 Intelligent Robotics Lab
 //
 // This file is part of the project Easy Navigation (EasyNav in short)
 // Licensed under the Apache License, Version 2.0 (the "License");
