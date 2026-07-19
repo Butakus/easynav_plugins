@@ -42,6 +42,7 @@ Motion controllers for trajectory tracking and reactive behaviors.
 | `easynav_simple_controller` | Simple proportional controller for testing. | [README](./controllers/easynav_simple_controller/README.md) |
 | `easynav_serest_controller` | SeReST (Safe Reactive Steering) controller. | [README](./controllers/easynav_serest_controller/README.md) |
 | `easynav_mpc_controller` | Model Predictive Controller (MPC). | [README](./controllers/easynav_mpc_controller/README.md) |
+| `easynav_regulated_pp_controller` | Regulated Pure Pursuit controller, with optional Dynamic Window (DWPP) extension. | [README](./controllers/easynav_regulated_pp_controller/README.md) |
 
 ---
 
