@@ -161,7 +161,9 @@ Same guidance as upstream Nav2 applies:
 - For Adaptive Pure Pursuit behavior, disable all boolean regulation parameters except
   `use_velocity_scaled_lookahead_dist`, and tune `lookahead_time`, `min_lookahead_dist` and
   `max_lookahead_dist`.
-- For plain Pure Pursuit behavior, disable all boolean parameters and tune `lookahead_dist`.
+- For plain Pure Pursuit behavior, disable all boolean parameters and set
+  `approach_velocity_scaling_dist: 0.0` to disable approach-to-goal slow-down, then tune
+  `lookahead_dist`.
 - `use_obstacle_regulated_linear_velocity_scaling` can over-trigger in tightly cluttered
   environments (every point in a narrow corridor is "close"); tune `obstacle_scaling_dist` and
   `obstacle_scaling_gain` for the platform's environment, the same way `cost_scaling_dist` /

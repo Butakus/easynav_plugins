@@ -290,12 +290,18 @@ RegulatedPurePursuitController::rotateToHeading(
   const double sign = angle_to_target > 0.0 ? 1.0 : -1.0;
   angular_vel = sign * rotate_to_heading_angular_vel_;
 
-  const double min_feasible = last_angular_vel_ - max_angular_accel_ * dt;
-  const double max_feasible = last_angular_vel_ + max_angular_accel_ * dt;
+  // Braking (magnitude decreasing) is bounded by max_angular_decel_, speeding up
+  // (magnitude increasing) by max_angular_accel_; which bound applies to which side
+  // of the window depends on the current direction of rotation.
+  const double decel_bound = last_angular_vel_ >= 0.0 ? max_angular_decel_ : max_angular_accel_;
+  const double accel_bound = last_angular_vel_ >= 0.0 ? max_angular_accel_ : max_angular_decel_;
+  const double min_feasible = last_angular_vel_ - decel_bound * dt;
+  const double max_feasible = last_angular_vel_ + accel_bound * dt;
   angular_vel = std::clamp(angular_vel, min_feasible, max_feasible);
 
   // Slow down to avoid overshooting the target angle.
-  const double max_vel_to_stop = std::sqrt(2.0 * max_angular_accel_ * std::fabs(angle_to_target));
+  const double decel = std::max(max_angular_decel_, 1e-9);
+  const double max_vel_to_stop = std::sqrt(2.0 * decel * std::fabs(angle_to_target));
   if (std::fabs(angular_vel) > max_vel_to_stop) {
     angular_vel = sign * max_vel_to_stop;
   }
