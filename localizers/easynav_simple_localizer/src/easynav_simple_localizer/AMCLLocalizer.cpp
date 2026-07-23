@@ -239,9 +239,9 @@ AMCLLocalizer::on_initialize()
   RCLCPP_INFO(node->get_logger(), "at position (%lf, %lf, %lf) std_dev [%lf, %lf]",
     x_init, y_init, yaw_init, std_dev_xy, std_dev_yaw);
 
-  std::normal_distribution<double> noise_x(x_init, std_dev_xy);
-  std::normal_distribution<double> noise_y(y_init, std_dev_xy);
-  std::normal_distribution<double> noise_yaw(yaw_init, std_dev_yaw);
+  std::normal_distribution<double> noise_x(x_init, std::max(std_dev_xy, 1e-12));
+  std::normal_distribution<double> noise_y(y_init, std::max(std_dev_xy, 1e-12));
+  std::normal_distribution<double> noise_yaw(yaw_init, std::max(std_dev_yaw, 1e-12));
 
   particles_.resize(num_particles);
   for (auto & p : particles_) {
@@ -425,7 +425,7 @@ AMCLLocalizer::init_pose_callback(
   yaw_stddev = std::max(yaw_stddev, min_noise_yaw_);
 
   std::normal_distribution<double> standard_normal(0.0, 1.0);
-  std::normal_distribution<double> yaw_noise(0.0, yaw_stddev);
+  std::normal_distribution<double> yaw_noise(0.0, std::max(yaw_stddev, 1e-12));
 
   const std::size_t N = particles_.size();
   for (std::size_t i = 0; i < N; ++i) {
@@ -503,13 +503,16 @@ AMCLLocalizer::predict([[maybe_unused]] NavState & nav_state)
   std::mt19937 gen(rd());
 
   for (auto & p : particles_) {
-    std::normal_distribution<double> noise_dx(0.0, std::abs(dx) * noise_translation_);
-    std::normal_distribution<double> noise_dy(0.0, std::abs(dy) * noise_translation_);
-    std::normal_distribution<double> noise_dz(0.0, std::abs(dz) * noise_translation_);
+    std::normal_distribution<double> noise_dx(
+      0.0, std::max(std::abs(dx) * noise_translation_, 1e-12));
+    std::normal_distribution<double> noise_dy(
+      0.0, std::max(std::abs(dy) * noise_translation_, 1e-12));
+    std::normal_distribution<double> noise_dz(
+      0.0, std::max(std::abs(dz) * noise_translation_, 1e-12));
 
     std::normal_distribution<double> noise_yaw(
       0.0,
-      rot_len * noise_rotation_ + trans_len * noise_translation_to_rotation_);
+      std::max(rot_len * noise_rotation_ + trans_len * noise_translation_to_rotation_, 1e-12));
 
     tf2::Vector3 noisy_translation(
       dx + noise_dx(gen),
@@ -636,7 +639,7 @@ AMCLLocalizer::reseed()
   double yaw_variance = computeYawVariance(particles_, 0, N_top);
   double yaw_stddev = std::sqrt(yaw_variance);
   std::normal_distribution<double> yaw_noise(0.0, std::max(yaw_stddev, min_noise_yaw_));
-  std::normal_distribution<double> index_dist(0.0, 0.05 * static_cast<double>(N));
+  std::normal_distribution<double> index_dist(0.0, std::max(0.05 * static_cast<double>(N), 1e-12));
   std::normal_distribution<double> standard_normal(0.0, 1.0);
 
   for (std::size_t i = N_top; i < N; ++i) {
