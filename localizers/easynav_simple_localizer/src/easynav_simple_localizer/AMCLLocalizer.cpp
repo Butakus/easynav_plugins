@@ -502,18 +502,17 @@ AMCLLocalizer::predict([[maybe_unused]] NavState & nav_state)
   std::random_device rd;
   std::mt19937 gen(rd());
 
+  std::normal_distribution<double> noise_dx(
+    0.0, std::max(std::abs(dx) * noise_translation_, 1e-12));
+  std::normal_distribution<double> noise_dy(
+    0.0, std::max(std::abs(dy) * noise_translation_, 1e-12));
+  std::normal_distribution<double> noise_dz(
+    0.0, std::max(std::abs(dz) * noise_translation_, 1e-12));
+  std::normal_distribution<double> noise_yaw(
+    0.0,
+    std::max(rot_len * noise_rotation_ + trans_len * noise_translation_to_rotation_, 1e-12));
+
   for (auto & p : particles_) {
-    std::normal_distribution<double> noise_dx(
-      0.0, std::max(std::abs(dx) * noise_translation_, 1e-12));
-    std::normal_distribution<double> noise_dy(
-      0.0, std::max(std::abs(dy) * noise_translation_, 1e-12));
-    std::normal_distribution<double> noise_dz(
-      0.0, std::max(std::abs(dz) * noise_translation_, 1e-12));
-
-    std::normal_distribution<double> noise_yaw(
-      0.0,
-      std::max(rot_len * noise_rotation_ + trans_len * noise_translation_to_rotation_, 1e-12));
-
     tf2::Vector3 noisy_translation(
       dx + noise_dx(gen),
       dy + noise_dy(gen),
