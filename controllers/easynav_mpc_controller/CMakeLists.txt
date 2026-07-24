@@ -9,10 +9,15 @@ find_package(ament_cmake REQUIRED)
 find_package(easynav_common REQUIRED)
 find_package(easynav_core REQUIRED)
 find_package(easynav_system REQUIRED)
+find_package(easynav_sensors REQUIRED)
 find_package(pluginlib REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(tf2 REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(pcl_conversions REQUIRED)
 find_package(Eigen3 REQUIRED NO_MODULE)
 find_package(PCL REQUIRED COMPONENTS common io)
 find_package(NLopt QUIET)
@@ -42,12 +47,17 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   easynav_common::easynav_common
   easynav_core::easynav_core
   easynav_system::easynav_system
+  easynav_sensors::easynav_sensors
+  rclcpp::rclcpp
+  tf2::tf2
   tf2_ros::tf2_ros
   pluginlib::pluginlib
   Eigen3::Eigen
   nlopt
   ${geometry_msgs_TARGETS}
   ${nav_msgs_TARGETS}
+  ${sensor_msgs_TARGETS}
+  pcl_conversions::pcl_conversions
   ${PCL_LIBRARIES}
 )
 
@@ -84,11 +94,17 @@ pluginlib_export_plugin_description_file(easynav_core easynav_mpc_controller_plu
 ament_export_dependencies(
   easynav_common
   easynav_core
+  easynav_system
+  easynav_sensors
   pluginlib
+  rclcpp
+  tf2
   tf2_ros
   geometry_msgs
   nav_msgs
-  eigen
+  sensor_msgs
+  pcl_conversions
+  Eigen3
   nlopt
 )
 

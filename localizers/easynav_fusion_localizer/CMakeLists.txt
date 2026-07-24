@@ -11,11 +11,21 @@ find_package(rclcpp_lifecycle REQUIRED)
 find_package(easynav_core REQUIRED)
 find_package(easynav_common REQUIRED)
 find_package(easynav_localizer REQUIRED)
+find_package(easynav_sensors REQUIRED)
 find_package(pluginlib REQUIRED)
-find_package(geographic_msgs REQUIRED)
 find_package(robot_localization REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(angles REQUIRED)
+find_package(diagnostic_msgs REQUIRED)
+find_package(diagnostic_updater REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
+find_package(Eigen3 REQUIRED NO_MODULE)
+find_package(yaets REQUIRED)
 
 # Geographiclib installs FindGeographicLib.cmake to this non-standard location
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/cmake/geographiclib/")
@@ -30,9 +40,21 @@ set(dependencies
   easynav_core
   easynav_common
   easynav_localizer
+  easynav_sensors
   pluginlib
-  geographic_msgs
   robot_localization
+  std_srvs
+  angles
+  diagnostic_msgs
+  diagnostic_updater
+  sensor_msgs
+  geometry_msgs
+  nav_msgs
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
+  Eigen3
+  yaets
 )
 
 add_library(fusion_localizer SHARED
@@ -49,8 +71,20 @@ target_link_libraries(fusion_localizer
   easynav_core::easynav_core
   easynav_common::easynav_common
   easynav_localizer::easynav_localizer
+  easynav_sensors::easynav_sensors
   pluginlib::pluginlib
-  ${geographic_msgs_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_lifecycle::rclcpp_lifecycle
+  tf2::tf2
+  tf2_ros::tf2_ros
+  tf2_geometry_msgs::tf2_geometry_msgs
+  Eigen3::Eigen
+  diagnostic_updater::diagnostic_updater
+  ${diagnostic_msgs_TARGETS}
+  ${sensor_msgs_TARGETS}
+  ${geometry_msgs_TARGETS}
+  ${nav_msgs_TARGETS}
+  ${std_srvs_TARGETS}
   GeographicLib
   ${GeographicLib_LIBRARIES}
   ${robot_localization_LIBRARIES}

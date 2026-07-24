@@ -9,7 +9,9 @@ find_package(ament_cmake REQUIRED)
 find_package(easynav_common REQUIRED)
 find_package(easynav_core REQUIRED)
 find_package(easynav_system REQUIRED)
+find_package(easynav_sensors REQUIRED)
 find_package(pluginlib REQUIRED)
+find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2 REQUIRED)
@@ -29,10 +31,12 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   easynav_common::easynav_common
   easynav_core::easynav_core
   easynav_system::easynav_system
+  easynav_sensors::easynav_sensors
   tf2_ros::tf2_ros
   tf2::tf2
   tf2_geometry_msgs::tf2_geometry_msgs
   pluginlib::pluginlib
+  rclcpp::rclcpp
   ${geometry_msgs_TARGETS}
   ${nav_msgs_TARGETS}
   ${std_msgs_TARGETS}
@@ -72,7 +76,9 @@ ament_export_dependencies(
   easynav_common
   easynav_core
   easynav_system
+  easynav_sensors
   pluginlib
+  rclcpp
   tf2_ros
   tf2
   tf2_geometry_msgs
