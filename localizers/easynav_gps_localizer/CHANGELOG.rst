@@ -2,8 +2,8 @@
 Changelog for package easynav_gps_localizer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2026-07-26)
+------------------
 * Complete deps
 * Update README.md for all localizers
 * Reset pose from RViz2 for every localizer

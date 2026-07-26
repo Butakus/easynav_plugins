@@ -2,8 +2,8 @@
 Changelog for package easynav_simple_localizer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2026-07-26)
+------------------
 * Complete deps
 * Avoid creating objects every loop cycle
 * Fix std::normal_distribution when stdev is zero

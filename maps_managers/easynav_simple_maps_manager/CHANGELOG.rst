@@ -2,8 +2,8 @@
 Changelog for package easynav_simple_maps_manager
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2026-07-26)
+------------------
 * Complete deps
 * Navstate key among filters are always map, not an arbitrary key
 * Update calls to deprecated get_package_share_directory

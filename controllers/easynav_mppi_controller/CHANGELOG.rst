@@ -2,8 +2,8 @@
 Changelog for package easynav_mppi_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2026-07-26)
+------------------
 * Complete deps
 * GPLv3 -> Apache 2.0
 * Remove C++20/C++23 features and update to new MethodBase interface

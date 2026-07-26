@@ -2,8 +2,8 @@
 Changelog for package easynav_vff_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2026-07-26)
+------------------
 * Complete deps
 * Update plugins to new sensors API
 * Merge branch 'rolling' of github.com:midemig/easynav_plugins into rolling

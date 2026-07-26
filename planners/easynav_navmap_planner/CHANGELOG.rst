@@ -2,8 +2,8 @@
 Changelog for package easynav_navmap_planner
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2026-07-26)
+------------------
 * Complete deps
 * GPLv3 -> Apache 2.0
 * Improve navstate print including the time

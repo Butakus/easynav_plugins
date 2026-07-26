@@ -2,8 +2,8 @@
 Changelog for package easynav_serest_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2026-07-26)
+------------------
 * Complete deps
 * Navstate key among filters are always map, not an arbitrary key
 * Navstate key among filters are always map, not an arbitrary key

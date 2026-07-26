@@ -2,8 +2,8 @@
 Changelog for package easynav_octomap_maps_manager
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2026-07-26)
+------------------
 * Complete deps
 * Update calls to deprecated get_package_share_directory
 * Update plugins to new sensors API

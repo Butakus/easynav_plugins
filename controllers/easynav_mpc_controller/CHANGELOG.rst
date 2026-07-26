@@ -2,8 +2,8 @@
 Changelog for package easynav_mpc_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.2 (2026-07-26)
+------------------
 * Complete deps
 * Adaptations to `#94 <https://github.com/EasyNavigation/easynav_plugins/issues/94>`_
 * Update plugins to new sensors API
