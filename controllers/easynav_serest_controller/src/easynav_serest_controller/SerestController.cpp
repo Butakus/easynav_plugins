@@ -634,8 +634,6 @@ SerestController::update_rt(NavState & nav_state)
   if (!fetch_required_inputs(nav_state, path, odom)) {return;}
 
   // 1.5) Goal tolerances: prefer shared GoalManager values, fallback to local params
-  // double goal_pos_tol = goal_pos_tol_;
-  // double goal_yaw_tol = goal_yaw_tol_deg_ * (M_PI / 180.0);
   if (nav_state.has("goal_tolerance.position")) {
     goal_pos_tol_ = nav_state.get<double>("goal_tolerance.position");
   }
