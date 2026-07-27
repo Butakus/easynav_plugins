@@ -99,10 +99,10 @@ TEST(DynamicWindowPurePursuit, ComputeDynamicWindowClampsToAccelLimits)
   current_speed.angular.z = 0.0;
 
   const auto window = easynav::dynamic_window_pure_pursuit::computeDynamicWindow(
-    current_speed, /*max_linear_vel=*/1.0, /*min_linear_vel=*/-1.0,
-    /*max_angular_vel=*/1.0, /*min_angular_vel=*/-1.0,
-    /*max_linear_accel=*/2.0, /*max_linear_decel=*/2.0,
-    /*max_angular_accel=*/2.0, /*max_angular_decel=*/2.0, /*dt=*/0.1);
+    current_speed, /*max_linear_vel=*/ 1.0, /*min_linear_vel=*/ -1.0,
+    /*max_angular_vel=*/ 1.0, /*min_angular_vel=*/ -1.0,
+    /*max_linear_accel=*/ 2.0, /*max_linear_decel=*/ 2.0,
+    /*max_angular_accel=*/ 2.0, /*max_angular_decel=*/ 2.0, /*dt=*/ 0.1);
 
   EXPECT_NEAR(window.max_linear_vel, 0.2, 1e-9);
   EXPECT_NEAR(window.min_linear_vel, -0.2, 1e-9);

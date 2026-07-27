@@ -190,21 +190,27 @@ AMCLLocalizer::on_initialize()
   const auto & plugin_name = get_plugin_name();
 
   int num_particles = 100;
-  double x_init, y_init, yaw_init, std_dev_xy, std_dev_yaw;
+  double x_init = 0.0;
+  double y_init = 0.0;
+  double yaw_init = 0.0;
+  double std_dev_xy = 0.5;
+  double std_dev_yaw = 0.5;
+  double reseed_freq = 1.0;
 
-  node->declare_parameter<int>(plugin_name + ".num_particles", 100);
-  node->declare_parameter<double>(plugin_name + ".initial_pose.x", 0.0);
-  node->declare_parameter<double>(plugin_name + ".initial_pose.y", 0.0);
-  node->declare_parameter<double>(plugin_name + ".initial_pose.yaw", 0.0);
-  node->declare_parameter<double>(plugin_name + ".initial_pose.std_dev_xy", 0.5);
-  node->declare_parameter<double>(plugin_name + ".initial_pose.std_dev_yaw", 0.5);
-  node->declare_parameter<double>(plugin_name + ".reseed_freq", 1.0);
-  node->declare_parameter<double>(plugin_name + ".noise_translation", 0.01);
-  node->declare_parameter<double>(plugin_name + ".noise_rotation", 0.01);
-  node->declare_parameter<double>(plugin_name + ".noise_translation_to_rotation", 0.01);
-  node->declare_parameter<double>(plugin_name + ".min_noise_xy", 0.05);
-  node->declare_parameter<double>(plugin_name + ".min_noise_yaw", 0.05);
-  node->declare_parameter<bool>(plugin_name + ".compute_odom_from_tf", false);
+  node->declare_parameter<int>(plugin_name + ".num_particles", num_particles);
+  node->declare_parameter<double>(plugin_name + ".initial_pose.x", x_init);
+  node->declare_parameter<double>(plugin_name + ".initial_pose.y", y_init);
+  node->declare_parameter<double>(plugin_name + ".initial_pose.yaw", yaw_init);
+  node->declare_parameter<double>(plugin_name + ".initial_pose.std_dev_xy", std_dev_xy);
+  node->declare_parameter<double>(plugin_name + ".initial_pose.std_dev_yaw", std_dev_yaw);
+  node->declare_parameter<double>(plugin_name + ".reseed_freq", reseed_freq);
+  node->declare_parameter<double>(plugin_name + ".noise_translation", noise_translation_);
+  node->declare_parameter<double>(plugin_name + ".noise_rotation", noise_rotation_);
+  node->declare_parameter<double>(plugin_name + ".noise_translation_to_rotation",
+    noise_translation_to_rotation_);
+  node->declare_parameter<double>(plugin_name + ".min_noise_xy", min_noise_xy_);
+  node->declare_parameter<double>(plugin_name + ".min_noise_yaw", min_noise_yaw_);
+  node->declare_parameter<bool>(plugin_name + ".compute_odom_from_tf", compute_odom_from_tf_);
 
   node->get_parameter<int>(plugin_name + ".num_particles", num_particles);
   node->get_parameter<double>(plugin_name + ".initial_pose.x", x_init);
@@ -220,7 +226,6 @@ AMCLLocalizer::on_initialize()
   node->get_parameter<double>(plugin_name + ".min_noise_yaw", min_noise_yaw_);
   node->get_parameter<bool>(plugin_name + ".compute_odom_from_tf", compute_odom_from_tf_);
 
-  double reseed_freq;
   node->get_parameter<double>(plugin_name + ".reseed_freq", reseed_freq);
   reseed_time_ = 1.0 / reseed_freq;
 
