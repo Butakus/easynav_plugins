@@ -20,18 +20,26 @@ find_package(sensor_msgs REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(Eigen3 REQUIRED NO_MODULE)
 find_package(PCL REQUIRED COMPONENTS common io)
+
+# Try to find NLopt package from system first, or get it through CMake FetchContent to build it
 find_package(NLopt QUIET)
 if(NOT NLopt_FOUND)
-  find_path(NLOPT_INCLUDE_DIR nlopt.hpp)
-  find_library(NLOPT_LIBRARY nlopt)
-  if(NLOPT_INCLUDE_DIR AND NLOPT_LIBRARY)
-    set(NLopt_FOUND TRUE)
-    set(NLopt_INCLUDE_DIRS ${NLOPT_INCLUDE_DIR})
-    set(NLopt_LIBRARIES ${NLOPT_LIBRARY})
-  endif()
-endif()
-if(NOT NLopt_FOUND)
-  message(FATAL_ERROR "NLopt not found. Install libnlopt-dev or set NLopt_DIR/CMAKE_PREFIX_PATH.")
+  include(FetchContent)
+  # Force FetchContent to download and build in the workspace build dir
+  set(FETCH_CONTENT_BASE_DIR "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/_deps>")
+
+  # Disable unneeded NLopt features
+  set(NLOPT_PYTHON OFF)
+  set(NLOPT_OCTAVE OFF)
+  set(NLOPT_GUILE OFF)
+  set(NLOPT_JAVA OFF)
+  fetchcontent_declare(nlopt
+    GIT_REPOSITORY  https://github.com/stevengj/nlopt
+    GIT_TAG         v2.11.0
+  )
+  fetchcontent_makeavailable(
+    nlopt
+  )
 endif()
 
 add_library(${PROJECT_NAME} SHARED
