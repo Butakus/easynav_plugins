@@ -145,9 +145,8 @@ InflationFilter::update(NavState & nav_state)
 
   updateCosts(dynamic_map, min_i, min_j, max_i, max_j);
 
-  for (int i = 0; i < dynamic_map.getSizeInCellsX(); i++) {
-    for (int j = 0; j < dynamic_map.getSizeInCellsY(); j++) {
-      int index = static_cast<int>(dynamic_map.getIndex(i, j));
+  for (int i = 0; i < size_x; i++) {
+    for (int j = 0; j < size_y; j++) {
       unsigned char cost = std::max(
         dynamic_map.getCost(i, j), base_inflated_.getCost(i, j));
       dynamic_map.setCost(i, j, cost);
