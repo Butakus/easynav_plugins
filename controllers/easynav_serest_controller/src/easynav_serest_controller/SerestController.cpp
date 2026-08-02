@@ -642,6 +642,10 @@ SerestController::update_rt(NavState & nav_state)
   if (nav_state.has("goal_tolerance.yaw")) {
     goal_yaw_tol = nav_state.get<double>("goal_tolerance.yaw");
   }
+  // Propagate the resolved tolerances to the members consumed by compute_goal_zone()
+  // and maybe_final_align_and_publish(), so a GoalManager override actually takes effect.
+  goal_pos_tol_ = goal_pos_tol;
+  goal_yaw_tol_deg_ = goal_yaw_tol * (180.0 / M_PI);
 
   // 2) Robot state (position + yaw)
   Vec2 robot_xy; double yaw = 0.0;
