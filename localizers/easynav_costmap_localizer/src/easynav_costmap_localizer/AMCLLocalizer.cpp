@@ -189,7 +189,7 @@ AMCLLocalizer::on_initialize()
   auto node = get_node();
   const auto & plugin_name = get_plugin_name();
 
-  int num_particles;
+  int num_particles = 100;
   double x_init, y_init, yaw_init, std_dev_xy, std_dev_yaw;
 
   node->declare_parameter<int>(plugin_name + ".num_particles", 100);
