@@ -132,7 +132,7 @@ MPCController::update_rt(NavState & nav_state)
 {
   // If navigation is IDLE, force zero velocity
   if (nav_state.has("navigation_state")) {
-    const auto nav_state_val = nav_state.get<easynav::GoalManager::State>("navigation_state");
+    const auto nav_state_val = nav_state.get_safe<easynav::GoalManager::State>("navigation_state");
     if (nav_state_val == easynav::GoalManager::State::IDLE) {
       cmd_vel_.header.stamp = get_node()->now();
       cmd_vel_.twist.linear.x = 0.0;
@@ -151,7 +151,7 @@ MPCController::update_rt(NavState & nav_state)
     return;
   }
 
-  nav_msgs::msg::Path path = nav_state.get<nav_msgs::msg::Path>("path");
+  nav_msgs::msg::Path path = nav_state.get_safe<nav_msgs::msg::Path>("path");
   if (path.poses.empty()) {
     // If the path is empty, stop the robot
     cmd_vel_.header.frame_id = path.header.frame_id;
@@ -165,7 +165,7 @@ MPCController::update_rt(NavState & nav_state)
   // Build a local path that:
   // 1) keeps only the segment that brings the robot closer to the goal, and
   // 2) prepends a short straight segment from the robot pose to that segment.
-  const auto & robot_pose_msg = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
+  const auto & robot_pose_msg = nav_state.get_safe<nav_msgs::msg::Odometry>("robot_pose");
   const auto & robot_p = robot_pose_msg.pose.pose.position;
 
   // Goal is the last point of the planner path
@@ -226,7 +226,7 @@ MPCController::update_rt(NavState & nav_state)
   cloud_out.header.stamp = get_node()->now();
   detection_pub_->publish(cloud_out);
 
-  const auto pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose").pose.pose;
+  const auto pose = nav_state.get_safe<nav_msgs::msg::Odometry>("robot_pose").pose.pose;
   double roll_, pitch_, yaw_;
   tf2::Quaternion q(
     pose.orientation.x,
@@ -296,10 +296,10 @@ MPCController::update_rt(NavState & nav_state)
     double yaw_tol = fallback_goal_yaw_tol_;
 
     if (nav_state.has("goal_tolerance.position")) {
-      pos_tol = nav_state.get<double>("goal_tolerance.position");
+      pos_tol = nav_state.get_safe<double>("goal_tolerance.position");
     }
     if (nav_state.has("goal_tolerance.yaw")) {
-      yaw_tol = nav_state.get<double>("goal_tolerance.yaw");
+      yaw_tol = nav_state.get_safe<double>("goal_tolerance.yaw");
     }
 
     const double dx_g = goal_pose.position.x - pose.position.x;

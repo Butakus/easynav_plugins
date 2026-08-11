@@ -94,6 +94,9 @@ if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   set(ament_cmake_copyright_FOUND TRUE)
   set(ament_cmake_cpplint_FOUND TRUE)
+  # Vendored third-party library: excluded from uncrustify instead of
+  # reformatting upstream code (same rationale as copyright/cpplint above).
+  set(ament_cmake_uncrustify_ADDITIONAL_EXCLUDE include/bonxai/*)
   ament_lint_auto_find_test_dependencies()
 endif()
 

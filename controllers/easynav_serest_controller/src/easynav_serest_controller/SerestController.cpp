@@ -288,7 +288,7 @@ SerestController::closest_obstacle_distance(
   // 1) Prefer direct measurement if it exists
   if (nav_state.has("closest_obstacle_distance")) {
     try {
-      return nav_state.get<double>("closest_obstacle_distance");
+      return nav_state.get_safe<double>("closest_obstacle_distance");
     } catch (...) {
       // fall through to estimation
     }
@@ -380,8 +380,8 @@ SerestController::fetch_required_inputs(
     return false;
   }
 
-  path = nav_state.get<nav_msgs::msg::Path>("path");
-  odom = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
+  path = nav_state.get_safe<nav_msgs::msg::Path>("path");
+  odom = nav_state.get_safe<nav_msgs::msg::Odometry>("robot_pose");
 
   if (rclcpp::Time(path.header.stamp, last_input_ts_.get_clock_type()) > last_input_ts_) {
     last_input_ts_ = rclcpp::Time(path.header.stamp, last_input_ts_.get_clock_type());

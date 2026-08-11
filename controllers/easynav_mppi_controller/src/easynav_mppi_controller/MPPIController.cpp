@@ -138,7 +138,7 @@ MPPIController::update_rt(NavState & nav_state)
 {
   // If navigation is IDLE, force zero velocity
   if (nav_state.has("navigation_state")) {
-    const auto nav_state_val = nav_state.get<easynav::GoalManager::State>("navigation_state");
+    const auto nav_state_val = nav_state.get_safe<easynav::GoalManager::State>("navigation_state");
     if (nav_state_val == easynav::GoalManager::State::IDLE) {
       twist_stamped_.header.stamp = get_node()->now();
       twist_stamped_.twist.linear.x = 0.0;
@@ -161,7 +161,7 @@ MPPIController::update_rt(NavState & nav_state)
     return;
   }
 
-  const auto & path = nav_state.get<nav_msgs::msg::Path>("path");
+  const auto & path = nav_state.get_safe<nav_msgs::msg::Path>("path");
 
   if (path.poses.empty()) {
     // If the path is empty, stop the robot and clear markers
@@ -181,7 +181,7 @@ MPPIController::update_rt(NavState & nav_state)
     return;
   }
 
-  const auto & pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose").pose.pose;
+  const auto pose = nav_state.get_safe<nav_msgs::msg::Odometry>("robot_pose").pose.pose;
   const auto & perceptions = nav_state.get_no_group<PointPerception>();
   const auto & tf_info = RTTFBuffer::getInstance()->get_tf_info();
   const auto & filtered = PointPerceptionsOpsView(perceptions)
