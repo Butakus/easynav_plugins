@@ -403,7 +403,7 @@ void
 RegulatedPurePursuitController::update_rt(NavState & nav_state)
 {
   if (nav_state.has("navigation_state")) {
-    const auto goal_state = nav_state.get<easynav::GoalManager::State>("navigation_state");
+    const auto goal_state = nav_state.get_safe<easynav::GoalManager::State>("navigation_state");
     if (goal_state == easynav::GoalManager::State::IDLE) {
       std_msgs::msg::Header header;
       header.stamp = get_node()->now();
@@ -414,7 +414,7 @@ RegulatedPurePursuitController::update_rt(NavState & nav_state)
 
   if (!nav_state.has("path") || !nav_state.has("robot_pose")) {return;}
 
-  const auto & path = nav_state.get<nav_msgs::msg::Path>("path");
+  const auto & path = nav_state.get_safe<nav_msgs::msg::Path>("path");
 
   std_msgs::msg::Header header;
   header.frame_id = path.header.frame_id;
@@ -425,7 +425,7 @@ RegulatedPurePursuitController::update_rt(NavState & nav_state)
     return;
   }
 
-  const auto & robot_pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose").pose.pose;
+  const auto robot_pose = nav_state.get_safe<nav_msgs::msg::Odometry>("robot_pose").pose.pose;
   const double robot_yaw = tf2::getYaw(robot_pose.orientation);
 
   const auto & goal_pose = path.poses.back().pose;
@@ -433,10 +433,10 @@ RegulatedPurePursuitController::update_rt(NavState & nav_state)
   double xy_tol = xy_goal_tolerance_;
   double yaw_tol = yaw_goal_tolerance_;
   if (nav_state.has("goal_tolerance.position")) {
-    xy_tol = nav_state.get<double>("goal_tolerance.position");
+    xy_tol = nav_state.get_safe<double>("goal_tolerance.position");
   }
   if (nav_state.has("goal_tolerance.yaw")) {
-    yaw_tol = nav_state.get<double>("goal_tolerance.yaw");
+    yaw_tol = nav_state.get_safe<double>("goal_tolerance.yaw");
   }
 
   const double dist_to_goal = std::hypot(

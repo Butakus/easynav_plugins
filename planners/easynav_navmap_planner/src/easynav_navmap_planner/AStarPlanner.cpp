@@ -89,7 +89,7 @@ void AStarPlanner::update(NavState & nav_state)
 
   const auto & navmap = nav_state.get<::navmap::NavMap>("map.navmap");
 
-  const auto & robot_pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
+  const auto & robot_pose = nav_state.get_safe<nav_msgs::msg::Odometry>("robot_pose");
   const auto & goal = goals.goals.front().pose;
   const auto & tf_info = RTTFBuffer::getInstance()->get_tf_info();
 

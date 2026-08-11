@@ -206,7 +206,7 @@ void VffController::update_rt(NavState & nav_state)
   if (!nav_state.has("goals")) {return;}
   if (!nav_state.has("robot_pose")) {return;}
 
-  const auto & all_goals = nav_state.get<nav_msgs::msg::Goals>("goals");
+  const auto & all_goals = nav_state.get_safe<nav_msgs::msg::Goals>("goals");
   const auto & tf_info = RTTFBuffer::getInstance()->get_tf_info();
 
   if (all_goals.goals.empty()) {
@@ -218,7 +218,7 @@ void VffController::update_rt(NavState & nav_state)
     return;
   }
 
-  const auto & robot_pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
+  const auto & robot_pose = nav_state.get_safe<nav_msgs::msg::Odometry>("robot_pose");
 
   // Current position
   double current_x_ = robot_pose.pose.pose.position.x;

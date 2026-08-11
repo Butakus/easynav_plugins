@@ -288,7 +288,7 @@ SerestController::closest_obstacle_distance(
   // 1) Prefer direct measurement if it exists
   if (nav_state.has("closest_obstacle_distance")) {
     try {
-      return nav_state.get<double>("closest_obstacle_distance");
+      return nav_state.get_safe<double>("closest_obstacle_distance");
     } catch (...) {
       // fall through to estimation
     }
@@ -380,8 +380,8 @@ SerestController::fetch_required_inputs(
     return false;
   }
 
-  path = nav_state.get<nav_msgs::msg::Path>("path");
-  odom = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
+  path = nav_state.get_safe<nav_msgs::msg::Path>("path");
+  odom = nav_state.get_safe<nav_msgs::msg::Odometry>("robot_pose");
 
   if (rclcpp::Time(path.header.stamp, last_input_ts_.get_clock_type()) > last_input_ts_) {
     last_input_ts_ = rclcpp::Time(path.header.stamp, last_input_ts_.get_clock_type());
@@ -637,10 +637,10 @@ SerestController::update_rt(NavState & nav_state)
   double goal_pos_tol = goal_pos_tol_;
   double goal_yaw_tol = goal_yaw_tol_deg_ * (M_PI / 180.0);
   if (nav_state.has("goal_tolerance.position")) {
-    goal_pos_tol = nav_state.get<double>("goal_tolerance.position");
+    goal_pos_tol = nav_state.get_safe<double>("goal_tolerance.position");
   }
   if (nav_state.has("goal_tolerance.yaw")) {
-    goal_yaw_tol = nav_state.get<double>("goal_tolerance.yaw");
+    goal_yaw_tol = nav_state.get_safe<double>("goal_tolerance.yaw");
   }
   // Propagate the resolved tolerances to the members consumed by compute_goal_zone()
   // and maybe_final_align_and_publish(), so a GoalManager override actually takes effect.
@@ -725,7 +725,7 @@ SerestController::update_rt(NavState & nav_state)
         d_closest, v_safe, v_curv, /*alpha*/1.0,
         allow_reverse_, dist_to_end,
         dist_xy_goal, gamma_slow,
-        /*in_final_align*/0, /*arrived*/0);
+        /*in_final_align*/ 0, /*arrived*/0);
       return;
     }
   }
@@ -834,7 +834,7 @@ SerestController::update_rt(NavState & nav_state)
     d_closest, v_safe, v_curv, alpha,
     allow_reverse_, dist_to_end,
     dist_xy_goal, gamma_slow,
-    /*in_final_align=*/0, /*arrived=*/0);
+    /*in_final_align=*/ 0, /*arrived=*/0);
 }
 
 }  // namespace easynav
