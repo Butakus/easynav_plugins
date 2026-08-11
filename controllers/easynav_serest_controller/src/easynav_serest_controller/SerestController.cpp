@@ -634,18 +634,14 @@ SerestController::update_rt(NavState & nav_state)
   if (!fetch_required_inputs(nav_state, path, odom)) {return;}
 
   // 1.5) Goal tolerances: prefer shared GoalManager values, fallback to local params
-  double goal_pos_tol = goal_pos_tol_;
-  double goal_yaw_tol = goal_yaw_tol_deg_ * (M_PI / 180.0);
+  //      Propagate the resolved tolerances to the members consumed by compute_goal_zone()
+  //      and maybe_final_align_and_publish(), so a GoalManager override actually takes effect.
   if (nav_state.has("goal_tolerance.position")) {
-    goal_pos_tol = nav_state.get_safe<double>("goal_tolerance.position");
+    goal_pos_tol_ = nav_state.get_safe<double>("goal_tolerance.position");
   }
   if (nav_state.has("goal_tolerance.yaw")) {
-    goal_yaw_tol = nav_state.get_safe<double>("goal_tolerance.yaw");
+    goal_yaw_tol_deg_ = nav_state.get_safe<double>("goal_tolerance.yaw") * (180.0 / M_PI);
   }
-  // Propagate the resolved tolerances to the members consumed by compute_goal_zone()
-  // and maybe_final_align_and_publish(), so a GoalManager override actually takes effect.
-  goal_pos_tol_ = goal_pos_tol;
-  goal_yaw_tol_deg_ = goal_yaw_tol * (180.0 / M_PI);
 
   // 2) Robot state (position + yaw)
   Vec2 robot_xy; double yaw = 0.0;
@@ -722,10 +718,10 @@ SerestController::update_rt(NavState & nav_state)
       publish_cmd_and_debug(
         nav_state, path, vlin, vrot,
         e_y, e_theta, rk.kappa_hat,
-        d_closest, v_safe, v_curv, /*alpha*/1.0,
+        d_closest, v_safe, v_curv, /*alpha*/ 1.0,
         allow_reverse_, dist_to_end,
         dist_xy_goal, gamma_slow,
-        /*in_final_align*/ 0, /*arrived*/0);
+        /*in_final_align*/ 0, /*arrived*/ 0);
       return;
     }
   }
@@ -834,7 +830,7 @@ SerestController::update_rt(NavState & nav_state)
     d_closest, v_safe, v_curv, alpha,
     allow_reverse_, dist_to_end,
     dist_xy_goal, gamma_slow,
-    /*in_final_align=*/ 0, /*arrived=*/0);
+    /*in_final_align=*/ 0, /*arrived=*/ 0);
 }
 
 }  // namespace easynav
